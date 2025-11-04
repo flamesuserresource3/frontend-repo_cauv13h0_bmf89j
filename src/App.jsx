@@ -1,28 +1,52 @@
-import { useState } from 'react'
+import { useRef } from 'react';
+import SceneHome from './components/SceneHome';
+import SceneAbout from './components/SceneAbout';
+import SceneProjects from './components/SceneProjects';
+import SceneContact from './components/SceneContact';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const onScrollTo = (id) => {
+    const targetMap = {
+      about: aboutRef.current,
+      projects: projectsRef.current,
+      contact: contactRef.current,
+    };
+    const el = targetMap[id];
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
+    <div className="min-h-screen w-full bg-black text-white">
+      {/* Hero with Spline background and audio */}
+      <SceneHome onScrollTo={onScrollTo} />
+
+      {/* About */}
+      <div ref={aboutRef}>
+        <SceneAbout />
       </div>
+
+      {/* Projects */}
+      <div ref={projectsRef}>
+        <SceneProjects />
+      </div>
+
+      {/* Contact */}
+      <div ref={contactRef}>
+        <SceneContact />
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-black/60 py-8 text-center text-sm text-slate-400">
+        <p>
+          © {new Date().getFullYear()} Akash Bhuker — Built with React, Framer Motion, and Spline.
+        </p>
+      </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
